@@ -1,0 +1,72 @@
+Déclaration de la classe Stateful Widget : Nous avons déclaré une classe Courses qui étend StatefulWidget. Cela signifie que notre widget peut gérer son état, ce qui est essentiel pour une application interactive comme la nôtre où les articles de la liste de courses seront ajoutés, modifiés et cochés.
+
+Création de l'état : À l'intérieur de notre classe Courses, nous avons la méthode createState qui initialise l'état de notre widget en retournant une nouvelle instance de _CoursesState.
+
+Structure de base de l'interface utilisateur : La classe _CoursesState étend State et contient la méthode build qui construit notre interface utilisateur. Nous retournons un widget Scaffold, qui fournit une structure de page de base dans une application Flutter. Le Scaffold contient une AppBar et un body.
+
+Barre d'application : Dans la AppBar, nous avons défini le titre de notre application, "Course Manager App", ce qui donne à l'utilisateur un contexte immédiat sur ce que fait l'application.
+
+Contenu principal : Pour le corps (body) du Scaffold, nous avons utilisé un widget Column qui permet d'organiser les enfants en ligne verticale. Pour l'instant, il contient un seul enfant, un widget Text affichant "LA LISTE DE COURSES".
+
+Ce code constitue le point de départ de notre interface utilisateur, sur lequel nous allons construire pour ajouter les fonctionnalités de gestion de la liste de courses telles que l'ajout, la modification, la suppression, et le marquage des articles comme achetés.
+
+
+
+
+
+Dans cette partie du code, nous progressons dans la structuration de notre application "Liste de courses" en créant un modèle pour les articles, ou 'courses', que l'utilisateur pourra gérer. Le code se trouve dans le fichier courses.dart sous un dossier models, qui est destiné à contenir les définitions de données pour notre application.
+
+Voici ce que nous avons fait :
+
+Définition de l'énumération Category : Nous avons défini une énumération Category qui liste les différentes catégories d'articles que l'utilisateur pourra sélectionner : repas, accessoire, habillement, travail et loisir. Les énumérations sont un moyen de définir un type avec un ensemble fixe de valeurs constantes, ce qui rend notre code plus sûr et plus facile à maintenir.
+Utilisation du package UUID : Nous avons importé le package uuid qui nous permet de générer des identifiants uniques. Cela garantit que chaque article ajouté à la liste aura un identifiant distinct, ce qui est crucial pour la gestion des articles (comme la modification ou la suppression d'un article spécifique).
+
+Création de la classe Course : La classe Course est notre modèle d'article de course. Pour chaque article, nous avons les champs suivants :
+
+id : Un String qui stocke l'identifiant unique, généré automatiquement à l'aide de uuid.v4().
+nom : Un String qui représente le nom de l'article.
+prix : Un double qui indique le prix de l'article.
+category : Un Category qui est l'énumération que nous avons définie plus tôt.
+createdAt : Un DateTime qui enregistre le moment de la création de l'article.
+Le constructeur de la classe Course : Le constructeur nécessite des paramètres nommés et tous les champs sont requis comme indiqué par le mot-clé required. Cela signifie que chaque fois qu'une instance de Course est créée, il faudra fournir un nom, un prix, une date de création, et une catégorie. Ces informations sont essentielles pour représenter un article complet dans notre liste de courses.
+
+Assignation de valeurs par défaut : Pour l'identifiant id, nous attribuons une valeur par défaut en
+
+utilisant la méthode uuid.v4(), qui génère un identifiant unique dès que nous créons un nouvel objet Course. Cela assure que chaque instance de Course ait son propre identifiant sans que nous ayons à le spécifier explicitement à chaque fois.
+
+
+
+
+
+Dans cette partie du code, nous avons conçu un widget personnalisé CoursesList qui étend StatelessWidget. Ce widget a pour but d'afficher la liste des courses fournies en entrée. Voici une explication détaillée :
+
+Déclaration du widget CoursesList : Nous avons déclaré CoursesList comme un widget sans état (stateless), ce qui signifie qu'il ne changera pas au fil du temps. Cela est idéal pour des listes qui ne nécessitent pas de mise à jour dynamique de leur contenu sans action utilisateur.
+
+Constructeur de CoursesList : Le constructeur de CoursesList requiert un argument courses, qui est une liste d'objets Course. Cet argument est marqué comme required, assurant qu'une liste doit être fournie chaque fois que CoursesList est instancié.
+
+Champ final courses : Nous avons un champ final courses de type List<Course>. En Flutter, déclarer un champ comme final signifie qu'une fois qu'une valeur lui a été attribuée, elle ne peut plus être modifiée.
+
+Méthode build : Dans la méthode build, qui est appelée à chaque fois que Flutter a besoin de construire ce widget, nous retournons un ListView.builder. Ce type de ListView est optimal pour afficher de longues listes d'éléments car il ne crée les widgets que pour les éléments visibles à l'écran.
+
+ListView.builder : Le ListView.builder prend deux paramètres principaux :
+
+itemCount : Nous utilisons courses.length pour déterminer le nombre d'éléments dans la liste, permettant au builder de savoir combien d'éléments il doit construire.
+itemBuilder : Il s'agit d'une fonction anonyme qui construit chaque élément de la liste. Pour chaque élément, elle prend le contexte et un index, puis retourne un widget Text contenant le nom de l'article de course correspondant à cet index.
+
+
+
+
+Dans le fichier main.dart, qui est le point d'entrée de toutes les applications Flutter, nous avons établi le code nécessaire pour démarrer notre application "Liste de courses". Voici les étapes que nous avons suivies :
+
+Importations : Nous avons importé le package material.dart qui est essentiel pour utiliser les widgets Material Design dans notre application. Nous avons également importé courses.dart depuis notre dossier de modèles, qui
+contiendra vraisemblablement la logique de notre interface utilisateur principale et les modèles de données associés.
+
+Fonction main : La fonction main() est le point de départ de l'exécution de l'application. Dans Flutter, c'est là que nous appelons la fonction runApp(), qui prend le widget racine de notre application.
+
+Widget MaterialApp : Nous avons passé une instance du widget MaterialApp à runApp(). MaterialApp est un widget pratique qui enveloppe plusieurs widgets que les applications material design nécessitent généralement. Il va gérer des choses comme le routage, les thèmes, et bien sûr, il sert de conteneur pour l'écran d'accueil de l'application.
+
+Définir l'écran d'accueil : En utilisant la propriété home, nous avons défini le widget racine de notre application comme étant Courses(), ce qui est probablement le widget défini dans courses.dart que nous avons vu précédemment.
+
+
+
+Le widget CourseItem utilise un Card pour afficher chaque article avec un padding symétrique pour l'esthétique. Il organise le nom et le prix de l'article avec une Column et une Row, séparés par un SizedBox pour l'espacement. Le prix est précédé du mot "Prix :", suivi de la valeur dynamique de l'article.
